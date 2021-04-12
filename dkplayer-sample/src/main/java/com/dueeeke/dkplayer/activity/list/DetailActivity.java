@@ -56,7 +56,7 @@ public class DetailActivity extends BaseActivity<VideoView> {
         //拿到VideoView实例
         mVideoView = getVideoViewManager().get(Tag.SEAMLESS);
         //如果已经添加到某个父容器，就将其移除
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         //把播放器添加到页面的容器中
         mPlayerContainer.addView(mVideoView);
         //设置新的控制器

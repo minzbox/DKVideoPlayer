@@ -18,7 +18,7 @@ import com.dueeeke.videoplayer.player.VideoView;
 import com.dueeeke.videoplayer.player.VideoViewManager;
 
 /**
- * 页面以及播放器共有逻辑封装
+ * The page and the player share a logic package
  * @param <T>
  */
 @SuppressLint("Registered")
@@ -109,26 +109,26 @@ public class BaseActivity<T extends VideoView> extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mVideoView != null) {
-            mVideoView.resume();
-        }
+//        if (mVideoView != null) {
+//            mVideoView.resume();
+//        }
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mVideoView != null) {
-            mVideoView.pause();
-        }
+//        if (mVideoView != null) {
+//            mVideoView.pause();
+//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mVideoView != null) {
-            mVideoView.release();
-        }
+//        if (mVideoView != null) {
+//            mVideoView.release();
+//        }
     }
 
     @Override

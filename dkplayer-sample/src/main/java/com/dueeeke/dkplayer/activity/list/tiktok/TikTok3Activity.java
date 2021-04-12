@@ -159,7 +159,7 @@ public class TikTok3Activity extends BaseActivity<VideoView> {
             Tiktok3Adapter.ViewHolder viewHolder = (Tiktok3Adapter.ViewHolder) itemView.getTag();
             if (viewHolder.mPosition == position) {
                 mVideoView.release();
-                Utils.removeViewFormParent(mVideoView);
+                Utils.removeViewFromParent(mVideoView);
                 TiktokBean tiktokBean = mVideoList.get(position);
                 String playUrl = mPreloadManager.getPlayUrl(tiktokBean.videoDownloadUrl);
                 L.i("startPlay: " + "position: " + position + "  url: " + playUrl);

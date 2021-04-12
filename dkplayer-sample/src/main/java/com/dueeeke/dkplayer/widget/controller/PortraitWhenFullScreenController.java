@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.dueeeke.dkplayer.R;
 import com.dueeeke.videocontroller.StandardVideoController;
 import com.dueeeke.videocontroller.component.VodControlView;
-import com.dueeeke.videoplayer.controller.MediaPlayerControl;
+import com.dueeeke.videoplayer.controller.IMediaPlayerControl;
 import com.dueeeke.videoplayer.player.VideoView;
 
 public class PortraitWhenFullScreenController extends StandardVideoController {
@@ -37,20 +37,17 @@ public class PortraitWhenFullScreenController extends StandardVideoController {
         VodControlView vodControlView = new VodControlView(getContext());
         vodControlView.showBottomProgress(false);
         mFullScreen = vodControlView.findViewById(R.id.fullscreen);
-        mFullScreen.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFullScreen();
-            }
-        });
+        mFullScreen.setOnClickListener(v -> toggleFullScreen());
         addControlComponent(vodControlView);
     }
 
     @Override
-    public void setMediaPlayer(MediaPlayerControl mediaPlayer) {
+    public void setMediaPlayer(IMediaPlayerControl mediaPlayer) {
         super.setMediaPlayer(mediaPlayer);
-        //不监听设备方向
-        mOrientationHelper.setOnOrientationChangeListener(null);
+        //Do not monitor device direction
+        if (mOrientationHelper != null) {
+            mOrientationHelper.setOnOrientationChangeListener(null);
+        }
     }
 
     @Override
@@ -68,11 +65,13 @@ public class PortraitWhenFullScreenController extends StandardVideoController {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        if (!mControlWrapper.isFullScreen()) {
+        if (mControlWrapper != null && !mControlWrapper.isFullScreen()) {
             mControlWrapper.startFullScreen();
             return true;
         }
-        mControlWrapper.toggleShowState();
+        if (mControlWrapper != null) {
+            mControlWrapper.toggleShowState();
+        }
         return true;
     }
 
@@ -107,16 +106,22 @@ public class PortraitWhenFullScreenController extends StandardVideoController {
         if (i == R.id.fullscreen) {
             toggleFullScreen();
         } else if (i == R.id.lock) {
-            mControlWrapper.toggleLockState();
+            if (mControlWrapper != null) {
+                mControlWrapper.toggleLockState();
+            }
         } else if (i == R.id.iv_play) {
             togglePlay();
         } else if (i == R.id.back) {
             stopFullScreen();
         } else if (i == R.id.thumb) {
-            mControlWrapper.start();
-            mControlWrapper.startFullScreen();
+            if (mControlWrapper != null) {
+                mControlWrapper.start();
+                mControlWrapper.startFullScreen();
+            }
         } else if (i == R.id.iv_replay) {
-            mControlWrapper.replay(true);
+            if (mControlWrapper != null) {
+                mControlWrapper.replay(true);
+            }
             mControlWrapper.startFullScreen();
         }
     }

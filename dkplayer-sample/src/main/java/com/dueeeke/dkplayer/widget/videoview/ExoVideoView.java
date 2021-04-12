@@ -27,7 +27,7 @@ public class ExoVideoView extends VideoView<CustomExoMediaPlayer> {
     private RenderersFactory mRenderersFactory;
     private TrackSelector mTrackSelector;
 
-    private ExoMediaSourceHelper mHelper;
+    private final ExoMediaSourceHelper mHelper;
 
     public ExoVideoView(Context context) {
         super(context);
@@ -42,7 +42,7 @@ public class ExoVideoView extends VideoView<CustomExoMediaPlayer> {
     }
 
     {
-        //由于传递了泛型，必须将CustomExoMediaPlayer设置进来，否者报错
+        //Because the generic type is passed, the CustomExoMediaPlayer must be set in, otherwise an error will be reported
         setPlayerFactory(new PlayerFactory<CustomExoMediaPlayer>() {
             @Override
             public CustomExoMediaPlayer createPlayer(Context context) {

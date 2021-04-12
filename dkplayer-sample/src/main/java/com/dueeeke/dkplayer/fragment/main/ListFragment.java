@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 注意：RecyclerView demo 我采用继承的方式实现，
- * ${@link com.dueeeke.dkplayer.fragment.list.RecyclerViewPortraitFragment} 我甚至使用了三重继承😂，
- * 实际开发中可以不需要这样。
- * 我这样做仅仅只为代码复用，方便维护
+ * Note: I implemented the RecyclerView demo by inheritance,
+ *   * ${@link com.dueeeke.dkplayer.fragment.list.RecyclerViewPortraitFragment} I even used triple inheritance 😂,
+ *   * This is not necessary in actual development.
+ *   * I do this only for code reuse and easy maintenance
  */
 public class ListFragment extends BaseFragment {
 

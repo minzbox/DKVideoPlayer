@@ -50,42 +50,42 @@ public class PlayerActivity extends BaseActivity<VideoView> {
     protected void initView() {
         super.initView();
         mVideoView = findViewById(R.id.player);
-
+        getLifecycle().addObserver(mVideoView);
         Intent intent = getIntent();
         if (intent != null) {
             StandardVideoController controller = new StandardVideoController(this);
-            //根据屏幕方向自动进入/退出全屏
+            //Automatically enter/exit full screen according to screen orientation
             controller.setEnableOrientation(true);
 
-            PrepareView prepareView = new PrepareView(this);//准备播放界面
-            ImageView thumb = prepareView.findViewById(R.id.thumb);//封面图
+            PrepareView prepareView = new PrepareView(this);//Ready to play interface
+            ImageView thumb = prepareView.findViewById(R.id.thumb);//cover image
             Glide.with(this).load(THUMB).into(thumb);
             controller.addControlComponent(prepareView);
 
-            controller.addControlComponent(new CompleteView(this));//自动完成播放界面
+            controller.addControlComponent(new CompleteView(this));//Auto complete playback interface
 
-            controller.addControlComponent(new ErrorView(this));//错误界面
+            controller.addControlComponent(new ErrorView(this));//Error interface
 
-            TitleView titleView = new TitleView(this);//标题栏
+            TitleView titleView = new TitleView(this);//title
             controller.addControlComponent(titleView);
 
-            //根据是否为直播设置不同的底部控制条
+            //According to whether to set different bottom control bars for live broadcast
             boolean isLive = intent.getBooleanExtra(IntentKeys.IS_LIVE, false);
             if (isLive) {
-                controller.addControlComponent(new LiveControlView(this));//直播控制条
+                controller.addControlComponent(new LiveControlView(this));//Live control strip
             } else {
-                VodControlView vodControlView = new VodControlView(this);//点播控制条
-                //是否显示底部进度条。默认显示
+                VodControlView vodControlView = new VodControlView(this);//On-demand control strip
+                //Whether to display the bottom progress bar. Default Display
 //                vodControlView.showBottomProgress(false);
                 controller.addControlComponent(vodControlView);
             }
 
-            GestureView gestureControlView = new GestureView(this);//滑动控制视图
+            GestureView gestureControlView = new GestureView(this);//Slide control view
             controller.addControlComponent(gestureControlView);
-            //根据是否为直播决定是否需要滑动调节进度
+            //Decide whether you need to slide to adjust the progress according to whether it is a live broadcast
             controller.setCanChangePosition(!isLive);
 
-            //设置标题
+            //Set title
             String title = intent.getStringExtra(IntentKeys.TITLE);
             titleView.setTitle(title);
 
@@ -104,23 +104,23 @@ public class PlayerActivity extends BaseActivity<VideoView> {
             //适配刘海屏，默认开启
 //            controller.setAdaptCutout(false);
 
-            //在控制器上显示调试信息
+            //Display debugging information on the controller
             controller.addControlComponent(new DebugInfoView(this));
-            //在LogCat显示调试信息
+            //Display debugging information in LogCat
             controller.addControlComponent(new PlayerMonitor());
 
-            //如果你不想要UI，不要设置控制器即可
+            //If you don’t want the UI, just don’t set the controller
             mVideoView.setVideoController(controller);
 
             mVideoView.setUrl(getIntent().getStringExtra(IntentKeys.URL));
 
             //保存播放进度
 //            mVideoView.setProgressManager(new ProgressManagerImpl());
-            //播放状态监听
+            //Play status monitoring
             mVideoView.addOnStateChangeListener(mOnStateChangeListener);
 
-            //临时切换播放核心，如需全局请通过VideoConfig配置，详见MyApplication
-            //使用IjkPlayer解码
+            //Temporarily switch the playback core, if you need to configure it globally, please configure it through VideoConfig, see MyApplication for details
+            //Use IjkPlayer to decode
 //            mVideoView.setPlayerFactory(IjkPlayerFactory.create());
             //使用ExoPlayer解码
 //            mVideoView.setPlayerFactory(ExoMediaPlayerFactory.create());
@@ -130,19 +130,16 @@ public class PlayerActivity extends BaseActivity<VideoView> {
             mVideoView.start();
         }
 
-        //播放其他视频
+        //Play other videos
         EditText etOtherVideo = findViewById(R.id.et_other_video);
-        findViewById(R.id.btn_start_play).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mVideoView.release();
-                mVideoView.setUrl(etOtherVideo.getText().toString());
-                mVideoView.start();
-            }
+        findViewById(R.id.btn_start_play).setOnClickListener(v -> {
+            mVideoView.release();
+            mVideoView.setUrl(etOtherVideo.getText().toString());
+            mVideoView.start();
         });
     }
 
-    private VideoView.OnStateChangeListener mOnStateChangeListener = new VideoView.SimpleOnStateChangeListener() {
+    private final VideoView.OnStateChangeListener mOnStateChangeListener = new VideoView.SimpleOnStateChangeListener() {
         @Override
         public void onPlayerStateChanged(int playerState) {
             switch (playerState) {
@@ -165,10 +162,12 @@ public class PlayerActivity extends BaseActivity<VideoView> {
                 case VideoView.STATE_PREPARED:
                     break;
                 case VideoView.STATE_PLAYING:
-                    //需在此时获取视频宽高
+                    //Need to get the video width and height at this time
                     int[] videoSize = mVideoView.getVideoSize();
-                    L.d("视频宽：" + videoSize[0]);
-                    L.d("视频高：" + videoSize[1]);
+                    if (videoSize != null) {
+                        L.d("视频宽：" + videoSize[0]);
+                        L.d("视频高：" + videoSize[1]);
+                    }
                     break;
                 case VideoView.STATE_PAUSED:
                     break;

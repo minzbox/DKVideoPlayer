@@ -35,7 +35,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private List<Fragment> mFragments = new ArrayList<>();
+    private final List<Fragment> mFragments = new ArrayList<>();
     public static int mCurrentIndex;
 
     @Override
@@ -159,10 +159,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         }
 
         if (mCurrentIndex != index) {
-            //切换tab，释放正在播放的播放器
+            //Switch tab, release the player that is playing
             if (mCurrentIndex == 1) {
                 getVideoViewManager().releaseByTag(Tag.LIST);
-                getVideoViewManager().releaseByTag(Tag.SEAMLESS, false);//注意不能移除
+                getVideoViewManager().releaseByTag(Tag.SEAMLESS, false);//Be careful not to remove
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment fragment = mFragments.get(index);

@@ -15,7 +15,7 @@ import com.dueeeke.videoplayer.render.IRenderView;
 import com.dueeeke.videoplayer.render.MeasureHelper;
 
 public class SurfaceRenderView extends SurfaceView implements IRenderView, SurfaceHolder.Callback {
-    private MeasureHelper mMeasureHelper;
+    private final MeasureHelper mMeasureHelper;
 
     private AbstractPlayer mMediaPlayer;
 

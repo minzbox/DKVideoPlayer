@@ -20,7 +20,7 @@ import com.dueeeke.dkplayer.util.Utils;
 import com.dueeeke.videoplayer.player.VideoView;
 
 /**
- * 无缝播放
+ * Seamless playback
  */
 public class SeamlessPlayFragment extends RecyclerViewAutoPlayFragment {
 
@@ -35,7 +35,7 @@ public class SeamlessPlayFragment extends RecyclerViewAutoPlayFragment {
     protected void initView() {
         super.initView();
 
-        //提前添加到VideoViewManager，供详情使用
+        //Added to VideoViewManager in advance for detailed use
         getVideoViewManager().add(mVideoView, Tag.SEAMLESS);
 
         mAdapter.setOnItemClickListener(position -> {
@@ -44,13 +44,13 @@ public class SeamlessPlayFragment extends RecyclerViewAutoPlayFragment {
             Bundle bundle = new Bundle();
             VideoBean videoBean = mVideos.get(position);
             if (mCurPos == position) {
-                //需要无缝播放
+                //Need to play seamlessly
                 bundle.putBoolean(IntentKeys.SEAMLESS_PLAY, true);
                 bundle.putString(IntentKeys.TITLE, videoBean.getTitle());
             } else {
-                //无需无缝播放，把相应数据传到详情页
+                //No need to play seamlessly, transfer the corresponding data to the details page
                 mVideoView.release();
-                //需要把控制器还原
+                //Need to restore the controller
                 mController.setPlayState(VideoView.STATE_IDLE);
                 bundle.putBoolean(IntentKeys.SEAMLESS_PLAY, false);
                 bundle.putString(IntentKeys.URL, videoBean.getUrl());
@@ -59,7 +59,7 @@ public class SeamlessPlayFragment extends RecyclerViewAutoPlayFragment {
             }
             intent.putExtras(bundle);
             View sharedView = mLinearLayoutManager.findViewByPosition(position).findViewById(R.id.player_container);
-            //使用共享元素动画
+            //Use shared element animation
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(getActivity(), sharedView, DetailActivity.VIEW_NAME_PLAYER_CONTAINER);
             ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
@@ -131,22 +131,17 @@ public class SeamlessPlayFragment extends RecyclerViewAutoPlayFragment {
     }
 
     private void restoreVideoView() {
-        //还原播放器
+        //Restore player
         View itemView = mLinearLayoutManager.findViewByPosition(mCurPos);
         VideoRecyclerViewAdapter.VideoHolder viewHolder = (VideoRecyclerViewAdapter.VideoHolder) itemView.getTag();
         mVideoView = getVideoViewManager().get(Tag.SEAMLESS);
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         viewHolder.mPlayerContainer.addView(mVideoView, 0);
 
         mController.addControlComponent(viewHolder.mPrepareView, true);
         mController.setPlayState(mVideoView.getCurrentPlayState());
         mController.setPlayerState(mVideoView.getCurrentPlayerState());
 
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mVideoView.setVideoController(mController);
-            }
-        }, 100);
+        mRecyclerView.postDelayed(() -> mVideoView.setVideoController(mController), 100);
     }
 }

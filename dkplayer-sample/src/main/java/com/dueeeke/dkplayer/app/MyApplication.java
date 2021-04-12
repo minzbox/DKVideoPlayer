@@ -3,7 +3,10 @@ package com.dueeeke.dkplayer.app;
 import android.app.Application;
 
 import com.dueeeke.videoplayer.BuildConfig;
+import com.dueeeke.videoplayer.exo.ExoMediaPlayer;
+import com.dueeeke.videoplayer.exo.ExoMediaPlayerFactory;
 import com.dueeeke.videoplayer.ijk.IjkPlayerFactory;
+import com.dueeeke.videoplayer.player.AndroidMediaPlayerFactory;
 import com.dueeeke.videoplayer.player.VideoViewConfig;
 import com.dueeeke.videoplayer.player.VideoViewManager;
 

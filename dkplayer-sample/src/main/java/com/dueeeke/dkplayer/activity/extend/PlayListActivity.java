@@ -46,13 +46,13 @@ public class PlayListActivity extends BaseActivity {
         addControlComponents();
         mController.addControlComponent(new PlayerMonitor());
 
-        //加载第一条数据
+        //Load the first data
         VideoBean videoBean = data.get(0);
         mVideoView.setUrl(videoBean.getUrl());
         mTitleView.setTitle(videoBean.getTitle());
         mVideoView.setVideoController(mController);
 
-        //监听播放结束
+        //End of monitoring playback
         mVideoView.addOnStateChangeListener(new VideoView.SimpleOnStateChangeListener() {
             private int mCurrentVideoPosition;
             @Override
@@ -62,12 +62,12 @@ public class PlayListActivity extends BaseActivity {
                         mCurrentVideoPosition++;
                         if (mCurrentVideoPosition >= data.size()) return;
                         mVideoView.release();
-                        //重新设置数据
+                        //Reset data
                         VideoBean videoBean = data.get(mCurrentVideoPosition);
                         mVideoView.setUrl(videoBean.getUrl());
                         mTitleView.setTitle(videoBean.getTitle());
                         mVideoView.setVideoController(mController);
-                        //开始播放
+                        //Start playing
                         mVideoView.start();
                     }
                 }

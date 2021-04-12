@@ -41,7 +41,7 @@ public class ADActivity extends BaseActivity<VideoView> {
         adControlView.setListener(new AdControlView.AdControlListener() {
             @Override
             public void onAdClick() {
-                Toast.makeText(ADActivity.this, "广告点击跳转", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ADActivity.this, "Ad click to jump", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -56,7 +56,7 @@ public class ADActivity extends BaseActivity<VideoView> {
         mVideoView.setUrl(proxyUrl);
         mVideoView.setVideoController(mController);
 
-        //监听播放结束
+        //End of monitoring playback
         mVideoView.addOnStateChangeListener(new VideoView.SimpleOnStateChangeListener() {
             @Override
             public void onPlayStateChanged(int playState) {
@@ -70,15 +70,15 @@ public class ADActivity extends BaseActivity<VideoView> {
     }
 
     /**
-     * 播放正片
+     * Play the feature film
      */
     private void playVideo() {
         mVideoView.release();
         mController.removeAllControlComponent();
         mController.addDefaultControlComponent("正片", false);
-        //重新设置数据
+        //Reset data
         mVideoView.setUrl(DataUtil.SAMPLE_URL);
-        //开始播放
+        //Start playing
         mVideoView.start();
     }
 }

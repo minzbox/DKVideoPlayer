@@ -1,13 +1,18 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply from: '../constants.gradle'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -15,10 +20,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly project.ext.annotation
     api project(':dkplayer-java')
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-ext {
-    releaseArtifact = 'dkplayer-ui'
+repositories {
+    mavenCentral()
 }
-
-apply from: '../publish.gradle'

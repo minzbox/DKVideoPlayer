@@ -51,7 +51,7 @@ public class ListViewFragment extends BaseFragment implements OnItemChildClickLi
             @Override
             public void onPlayStateChanged(int playState) {
                 if (playState == VideoView.STATE_IDLE) {
-                    Utils.removeViewFormParent(mVideoView);
+                    Utils.removeViewFromParent(mVideoView);
                     mCurPosition = -1;
                 }
             }
@@ -163,7 +163,7 @@ public class ListViewFragment extends BaseFragment implements OnItemChildClickLi
         View itemView = mAdapter.getItemView(position);
         VideoListViewAdapter.ViewHolder viewHolder = (VideoListViewAdapter.ViewHolder) itemView.getTag();
         mController.addControlComponent(viewHolder.mPrepareView, true);
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         viewHolder.mPlayerContainer.addView(mVideoView, 0);
         //播放之前将VideoView添加到VideoViewManager以便在别的页面也能操作它
         getVideoViewManager().add(mVideoView, Tag.LIST);

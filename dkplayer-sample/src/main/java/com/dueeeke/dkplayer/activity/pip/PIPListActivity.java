@@ -166,7 +166,7 @@ public class PIPListActivity extends BaseActivity implements OnItemChildClickLis
         VideoRecyclerViewAdapter.VideoHolder viewHolder = (VideoRecyclerViewAdapter.VideoHolder) itemView.getTag();
         //把列表中预置的PrepareView添加到控制器中，注意isPrivate此处只能为true。
         mController.addControlComponent(viewHolder.mPrepareView, true);
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         viewHolder.mPlayerContainer.addView(mVideoView, 0);
         mVideoView.start();
         mPIPManager.setPlayingPosition(position);

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.VideoHolder> {
 
-    private List<VideoBean> videos;
+    private final List<VideoBean> videos;
 
     private OnItemChildClickListener mOnItemChildClickListener;
 
@@ -84,7 +84,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
             if (mOnItemClickListener != null) {
                 itemView.setOnClickListener(this);
             }
-            //通过tag将ViewHolder和itemView绑定
+            //Binding ViewHolder and itemView through tag
             itemView.setTag(this);
         }
 

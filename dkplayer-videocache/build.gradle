@@ -1,18 +1,25 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply from: '../constants.gradle'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+        buildConfigField "String", "VERSION_NAME", "\"${project.ext.releaseVersion}\""
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
-ext {
-    releaseArtifact = 'videocache'
+dependencies {
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-apply from: '../publish.gradle'
+repositories {
+    mavenCentral()
+}

@@ -18,17 +18,18 @@ import com.dueeeke.dkplayer.util.DataUtil;
 import com.dueeeke.dkplayer.util.ProgressManagerImpl;
 import com.dueeeke.dkplayer.util.Tag;
 import com.dueeeke.dkplayer.util.Utils;
-import com.dueeeke.dkplayer.util.cache.ProxyVideoCacheManager;
 import com.dueeeke.videocontroller.StandardVideoController;
 import com.dueeeke.videocontroller.component.CompleteView;
 import com.dueeeke.videocontroller.component.ErrorView;
 import com.dueeeke.videocontroller.component.GestureView;
 import com.dueeeke.videocontroller.component.TitleView;
 import com.dueeeke.videocontroller.component.VodControlView;
+import com.dueeeke.videoplayer.exo.ExoMediaPlayer;
 import com.dueeeke.videoplayer.player.VideoView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * RecyclerView demo
@@ -47,11 +48,11 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
     protected TitleView mTitleView;
 
     /**
-     * 当前播放的位置
+     * Currently playing position
      */
     protected int mCurPos = -1;
     /**
-     * 上次播放的位置，用于页面切回来之后恢复播放
+     * The last played position, used to resume playing after the page is cut back
      */
     protected int mLastPos = mCurPos;
 
@@ -65,8 +66,8 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
         super.initView();
 
         initVideoView();
-        //保存进度
-//        mVideoView.setProgressManager(new ProgressManagerImpl());
+        //Save progress
+        mVideoView.setProgressManager(new ProgressManagerImpl());
 
         mRecyclerView = findViewById(R.id.rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -92,28 +93,23 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
 
         View view = findViewById(R.id.add);
         view.setVisibility(View.VISIBLE);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.addData(DataUtil.getVideoList());
-            }
-        });
+        view.setOnClickListener(v -> mAdapter.addData(DataUtil.getVideoList()));
     }
 
     protected void initVideoView() {
-        mVideoView = new VideoView(getActivity());
+        mVideoView = new VideoView(Objects.requireNonNull(getActivity()));
         mVideoView.setOnStateChangeListener(new VideoView.SimpleOnStateChangeListener() {
             @Override
             public void onPlayStateChanged(int playState) {
-                //监听VideoViewManager释放，重置状态
+                //Monitor the release of VideoViewManager and reset the state
                 if (playState == VideoView.STATE_IDLE) {
-                    Utils.removeViewFormParent(mVideoView);
+                    Utils.removeViewFromParent(mVideoView);
                     mLastPos = mCurPos;
                     mCurPos = -1;
                 }
             }
         });
-        mController = new StandardVideoController(getActivity());
+        mController = new StandardVideoController(Objects.requireNonNull(getActivity()));
         mErrorView = new ErrorView(getActivity());
         mController.addControlComponent(mErrorView);
         mCompleteView = new CompleteView(getActivity());
@@ -173,7 +169,7 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
     }
 
     /**
-     * PrepareView被点击
+     * PrepareView is clicked
      */
     @Override
     public void onItemChildClick(int position) {
@@ -181,8 +177,8 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
     }
 
     /**
-     * 开始播放
-     * @param position 列表位置
+     * Start playing
+     * @param position list position
      */
     protected void startPlay(int position) {
         if (mCurPos == position) return;
@@ -190,7 +186,7 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
             releaseVideoView();
         }
         VideoBean videoBean = mVideos.get(position);
-        //边播边存
+        //Play and save
 //        String proxyUrl = ProxyVideoCacheManager.getProxy(getActivity()).getProxyUrl(videoBean.getUrl());
 //        mVideoView.setUrl(proxyUrl);
 
@@ -199,11 +195,11 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
         View itemView = mLinearLayoutManager.findViewByPosition(position);
         if (itemView == null) return;
         VideoRecyclerViewAdapter.VideoHolder viewHolder = (VideoRecyclerViewAdapter.VideoHolder) itemView.getTag();
-        //把列表中预置的PrepareView添加到控制器中，注意isPrivate此处只能为true。
+        //Add the PrepareView preset in the list to the controller. Note that isPrivate can only be true here.
         mController.addControlComponent(viewHolder.mPrepareView, true);
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         viewHolder.mPlayerContainer.addView(mVideoView, 0);
-        //播放之前将VideoView添加到VideoViewManager以便在别的页面也能操作它
+        //Add VideoView to VideoViewManager before playing so that it can be operated on other pages
         getVideoViewManager().add(mVideoView, Tag.LIST);
         mVideoView.start();
         mCurPos = position;
@@ -215,7 +211,7 @@ public class RecyclerViewFragment extends BaseFragment implements OnItemChildCli
         if (mVideoView.isFullScreen()) {
             mVideoView.stopFullScreen();
         }
-        if(getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if(Objects.requireNonNull(getActivity()).getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         mCurPos = -1;

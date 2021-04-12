@@ -20,7 +20,7 @@ public class RecyclerViewPortraitFragment extends RecyclerViewAutoPlayFragment {
             @Override
             public void onPlayStateChanged(int playState) {
                 if (playState == VideoView.STATE_IDLE) {
-                    Utils.removeViewFormParent(mVideoView);
+                    Utils.removeViewFromParent(mVideoView);
                     mLastPos = mCurPos;
                     mCurPos = -1;
                 }

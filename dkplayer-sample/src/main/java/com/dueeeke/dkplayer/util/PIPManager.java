@@ -44,7 +44,7 @@ public class PIPManager {
 
     public void startFloatWindow() {
         if (mIsShowing) return;
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         mVideoView.setVideoController(mFloatController);
         mFloatController.setPlayState(mVideoView.getCurrentPlayState());
         mFloatController.setPlayerState(mVideoView.getCurrentPlayerState());
@@ -56,7 +56,7 @@ public class PIPManager {
     public void stopFloatWindow() {
         if (!mIsShowing) return;
         mFloatView.removeFromWindow();
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         mIsShowing = false;
     }
 
@@ -80,7 +80,7 @@ public class PIPManager {
 
     public void reset() {
         if (mIsShowing) return;
-        Utils.removeViewFormParent(mVideoView);
+        Utils.removeViewFromParent(mVideoView);
         mVideoView.release();
         mVideoView.setVideoController(null);
         mPlayingPosition = -1;

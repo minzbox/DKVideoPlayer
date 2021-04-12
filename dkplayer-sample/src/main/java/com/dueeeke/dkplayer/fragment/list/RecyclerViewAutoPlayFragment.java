@@ -12,7 +12,7 @@ import com.dueeeke.videoplayer.util.L;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
- * 滑动列表自动播放，仅包含自动播放的逻辑
+ * Sliding list to play automatically, only contains the logic of automatic play
  */
 public class RecyclerViewAutoPlayFragment extends RecyclerViewFragment {
 
@@ -24,14 +24,14 @@ public class RecyclerViewAutoPlayFragment extends RecyclerViewFragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == SCROLL_STATE_IDLE) { //滚动停止
+                if (newState == SCROLL_STATE_IDLE) { //Scroll stop
                     autoPlayVideo(recyclerView);
                 }
             }
 
             private void autoPlayVideo(RecyclerView view) {
                 if (view == null) return;
-                //遍历RecyclerView子控件,如果mPlayerContainer完全可见就开始播放
+                //Traverse the RecyclerView child controls and start playing if mPlayerContainer is fully visible
                 int count = view.getChildCount();
                 L.d("ChildCount:" + count);
                 for (int i = 0; i < count; i++) {
@@ -55,7 +55,7 @@ public class RecyclerViewAutoPlayFragment extends RecyclerViewFragment {
         super.initData();
 
         mRecyclerView.post(() -> {
-            //自动播放第一个
+            //Automatically play the first
             startPlay(0);
         });
     }

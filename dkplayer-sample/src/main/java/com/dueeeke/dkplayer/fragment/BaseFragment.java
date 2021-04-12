@@ -14,7 +14,7 @@ import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.dueeeke.videoplayer.util.L;
 
 /**
- * 可以懒加载的Fragment，使用androidx fragment的方式实现，区别传统方式
+ * Fragments that can be lazily loaded are implemented in the way of androidx fragment, which is different from the traditional way
  */
 public abstract class BaseFragment extends Fragment {
 
@@ -82,14 +82,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 是否懒加载
+     * Lazy loading
      */
     protected boolean isLazyLoad() {
         return false;
     }
 
     /**
-     * 子类可通过此方法直接拿到VideoViewManager
+     * Subclasses can directly get VideoViewManager through this method
      */
     protected VideoViewManager getVideoViewManager() {
         return VideoViewManager.instance();

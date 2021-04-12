@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply from: '../../constants.gradle'
 
 android {
@@ -8,6 +9,11 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -19,10 +25,11 @@ dependencies {
     api "com.google.android.exoplayer:exoplayer-hls:$project.exoPlayerVersion"
     api "com.google.android.exoplayer:exoplayer-smoothstreaming:$project.exoPlayerVersion"
     api "com.google.android.exoplayer:extension-rtmp:$project.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$project.exoPlayerVersion"
+    implementation 'com.google.android.exoplayer:extension-ima:2.12.1'
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-ext {
-    releaseArtifact = 'player-exo'
+repositories {
+    mavenCentral()
 }
-
-apply from: '../../publish.gradle'
